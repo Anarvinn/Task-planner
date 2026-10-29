@@ -7,6 +7,9 @@ env/
 __pycache__/
 *.py[cod]
 
+#Editor temporary files
+idea.txt
+
 # Program results / Output files
 
 
