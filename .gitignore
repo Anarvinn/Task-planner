@@ -8,8 +8,7 @@ __pycache__/
 *.py[cod]
 
 #Editor temporary files
-idea.txt
-data.json
+idea
 
 # Program results / Output files
 
