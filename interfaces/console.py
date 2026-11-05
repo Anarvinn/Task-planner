@@ -1,7 +1,7 @@
 from services.manager import Manager
 from exceptions import ManagerError
 from models.task import Task
-from console_helpers import read_text, get_priority, get_status
+from console_helpers import read_text, print_tasks, get_priority, get_status
 
 
 class ConsoleMenu:
@@ -13,10 +13,11 @@ class ConsoleMenu:
         actions = {
             '1': self.add_task,
             '2': self.edit_task,
-            '3': self.add_dependence,
-            '4': self.del_dependence,
-            '5': self.show_ready_tasks,
-            '6': self.show_all_tasks
+            '3': self.del_task,
+            '4': self.add_dependence,
+            '5': self.del_dependence,
+            '6': self.show_ready_tasks,
+            '7': self.show_all_tasks
         }
 
         while True:
@@ -24,10 +25,11 @@ class ConsoleMenu:
                 "\n========== TASK MANAGER ==========\n"
                 "1. Add task\n"
                 "2. Edit task\n"
-                "3. Add dependencies\n"
-                "4. Delate dependencies\n"
-                "5. Show ready task\n"
-                "6. Show all task\n"
+                "3. Delate task"
+                "4. Add dependencies\n"
+                "5. Delate dependencies\n"
+                "6. Show ready task\n"
+                "7. Show all task\n"
                 "0. Exit\n"
                 "=================================="
             )
@@ -35,7 +37,7 @@ class ConsoleMenu:
             choice = input("Select action: ").strip()
 
             if choice == '0':
-                print("program closed")
+                print("Program closed")
                 break
 
             actions = actions.get(choice)
@@ -90,53 +92,44 @@ class ConsoleMenu:
 
         print("Task successfully updated")
 
-    def add_dependence(self) -> None:
+    def del_task(self) -> None:
         id_task = read_text("Task ID: ")
         task = self.manager.get_task(id_task)
+        choice = read_text("Are you sure you want to delete the task? Y/N: ")
+        if choice == 'Y':
+            self.manager.del_task(task)
+            print("Task successfully deleted")
+        elif choice == 'N':
+            return
+        else:
+            print("Invalid choice")
+
+    def add_dependence(self) -> None:
+        id_task = read_text("Task ID: ")
+        self.manager.get_task(id_task)
 
         print("\nEnter the ID of the task you want to link")
         id_dependence = read_text("Dependence ID: ")
 
-        self.manager.add_dependence(task, id_dependence)
+        self.manager.add_dependence(id_task, id_dependence)
         print("Dependence successfully added")
 
     def del_dependence(self) -> None:
         id_task = read_text("Task ID: ")
-        task = self.manager.get_task(id_task)
+        self.manager.get_task(id_task)
 
         print("\nEnter the ID of the task you want to delete")
         id_dependence = read_text("Dependence ID: ")
 
-        self.manager.del_dependence(task, id_dependence)
+        self.manager.del_dependence(id_task, id_dependence)
         print("Dependence successfully deleted")
 
     def show_ready_tasks(self) -> None:
-        tasks = self.manager.get_ready_tasks()
+        tasks = self.manager.show_ready_tasks()
 
-        if not tasks:
-            print("No task found")
-            return
-
-        for task in tasks:
-            print(
-                f"\nID: {task.id}\n"
-                f"Title: {task.title}\n"
-                f"Priority: {task.priority}\n"
-                f"Status: {task.status}\n"
-                f"Dependencies: {len(task.dependence)}"
-            )
+        print_tasks(tasks)
 
     def show_all_tasks(self) -> None:
-        tasks = self.manager.get_all_tasks()
+        tasks = self.manager.show_all_tasks()
 
-        if not tasks:
-            print("No task found")
-            return
-        for task in tasks:
-            print(
-                f"\nID: {task.id}\n"
-                f"Title: {task.title}\n"
-                f"Priority: {task.priority}\n"
-                f"Status: {task.status}\n"
-                f"Dependencies: {len(task.dependence)}"
-            )
+        print_tasks(tasks)

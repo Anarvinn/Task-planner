@@ -1,4 +1,4 @@
-from models.task import PriorityType, StatusType
+from models.task import PriorityType, StatusType, Task
 
 
 def read_text(pattern: str) -> str:
@@ -51,3 +51,27 @@ def get_status() -> StatusType:
         return
 
     return options[choice]
+
+
+def print_tasks(tasks: list[Task]):
+    if not tasks:
+        print("No task found")
+        return
+
+    print(
+        f"\n{'ID':<15}"
+        f"{'TITLE':<15}"
+        f"{'PRIORITY':<15}"
+        f"{'STATUS':>15}"
+        f"{'DEPENDENCE':>12}"
+    )
+    print('-' * 62)
+
+    for task in tasks:
+        print(
+            f"{task.id:<15}"
+            f"{task.title:<15}"
+            f"{task.priority:<15}"
+            f"{task.status:>15}"
+            f"{len(task.dependence):>15}"
+        )

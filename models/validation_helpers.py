@@ -1,5 +1,5 @@
 from exceptions import ValidationError
-from task import PriorityType, StatusType
+from models.task import PriorityType, StatusType
 
 
 def validate_text(text: str, field: str) -> str:

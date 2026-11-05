@@ -9,3 +9,15 @@ class ValidationError(ManagerError):
 
 class StorageError(ManagerError):
     """"Storage operation failed"""
+
+
+class DependenceError(ManagerError):
+    """Dependency connection error"""
+
+
+class TaskNotFoundError(ManagerError):
+    """Task not found"""
+
+
+class DuplicateIdError(ManagerError):
+    """ID already exist"""
