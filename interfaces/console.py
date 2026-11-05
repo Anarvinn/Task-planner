@@ -1,7 +1,7 @@
 from services.manager import Manager
 from exceptions import ManagerError
 from models.task import Task
-from console_helpers import read_text
+from console_helpers import read_text, get_priority, get_status
 
 
 class ConsoleMenu:
@@ -14,9 +14,9 @@ class ConsoleMenu:
             '1': self.add_task,
             '2': self.edit_task,
             '3': self.add_dependence,
-            '4': self.del_dependencies,
-            '5': self.show_ready_task,
-            '6': self.show_all_task
+            '4': self.del_dependence,
+            '5': self.show_ready_tasks,
+            '6': self.show_all_tasks
         }
 
         while True:
@@ -53,9 +53,12 @@ class ConsoleMenu:
 
     def add_task(self) -> None:
 
+        title = read_text("Title: ")
+        priority = get_priority()
+
         task = Task(
-            title=read_text("Title: "),
-            priority=read_text("Priotity: "),
+            title=title,
+            priority=priority
         )
 
         self.manager.add_task(task)
@@ -106,3 +109,34 @@ class ConsoleMenu:
 
         self.manager.del_dependence(task, id_dependence)
         print("Dependence successfully deleted")
+
+    def show_ready_tasks(self) -> None:
+        tasks = self.manager.get_ready_tasks()
+
+        if not tasks:
+            print("No task found")
+            return
+
+        for task in tasks:
+            print(
+                f"\nID: {task.id}\n"
+                f"Title: {task.title}\n"
+                f"Priority: {task.priority}\n"
+                f"Status: {task.status}\n"
+                f"Dependencies: {len(task.dependence)}"
+            )
+
+    def show_all_tasks(self) -> None:
+        tasks = self.manager.get_all_tasks()
+
+        if not tasks:
+            print("No task found")
+            return
+        for task in tasks:
+            print(
+                f"\nID: {task.id}\n"
+                f"Title: {task.title}\n"
+                f"Priority: {task.priority}\n"
+                f"Status: {task.status}\n"
+                f"Dependencies: {len(task.dependence)}"
+            )
