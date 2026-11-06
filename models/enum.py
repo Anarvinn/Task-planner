@@ -1,6 +1,6 @@
 from __future__ import annotations
-from enum import StrEnum
 from functools import total_ordering
+from enum import StrEnum
 
 
 @total_ordering

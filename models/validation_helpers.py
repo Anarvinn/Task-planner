@@ -1,6 +1,6 @@
 from __future__ import annotations
-from exceptions import ValidationError
 from models.enum import PriorityType, StatusType
+from exceptions import ValidationError
 
 
 def validate_text(text: str, field: str) -> str:

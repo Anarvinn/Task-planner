@@ -1,6 +1,6 @@
-from models.task import Task
-from models.enum import PriorityType
 from exceptions import ValidationError
+from models.enum import PriorityType
+from models.task import Task
 
 
 def read_text(pattern: str) -> str:

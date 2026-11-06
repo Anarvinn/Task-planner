@@ -1,10 +1,11 @@
 from __future__ import annotations
 from exceptions import ValidationError, StorageError, TaskNotFoundError, DuplicateIdError, DependenceError
+from models.enum import PriorityType, StatusType
 from models.dependence import CheckDependence
 from storage.json_storage import JsonStorage
 from models.task import Task
-from models.enum import PriorityType, StatusType
 from copy import deepcopy
+from typing import Any
 
 
 class Manager:
@@ -131,7 +132,7 @@ class Manager:
         result = sorted(result, key=lambda t: (t.priority, t.id), reverse=True)
         return result
 
-    def record(self, operation):
+    def record(self, operation) -> Any:
         previous_tasks = deepcopy(self._tasks)
 
         try:

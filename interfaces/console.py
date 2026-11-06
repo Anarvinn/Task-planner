@@ -1,7 +1,7 @@
+from interfaces.console_helpers import read_text, print_tasks, get_priority
 from services.manager import Manager
 from exceptions import ManagerError
 from models.task import Task
-from interfaces.console_helpers import read_text, print_tasks, get_priority
 
 
 class ConsoleMenu:

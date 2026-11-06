@@ -1,7 +1,7 @@
 from __future__ import annotations
-from dataclasses import dataclass, field
 from models.validation_helpers import validate_text, validate_priority, validate_status
 from models.enum import PriorityType, StatusType
+from dataclasses import dataclass, field
 import uuid
 
 
