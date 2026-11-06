@@ -1,4 +1,6 @@
-from models.task import PriorityType, StatusType, Task
+from models.task import Task
+from models.enum import PriorityType
+from exceptions import ValidationError
 
 
 def read_text(pattern: str) -> str:
@@ -15,40 +17,18 @@ def get_priority() -> PriorityType:
     options = {
         '1': PriorityType.LOW,
         '2': PriorityType.MEDIUM,
-        '3': PriorityType.HIGHT
+        '3': PriorityType.HIGH
     }
 
     print(
         "\n1. Low\n"
         "2. Medium\n"
-        "3. Hight\n")
+        "3. High\n")
 
-    choice = input("Select priority").strip()
-
-    if choice not in options:
-        print("Invalid priority option")
-        return
-
-    return options[choice]
-
-
-def get_status() -> StatusType:
-    options = {
-        '1': StatusType.NEW,
-        '2': StatusType.IN_WORK,
-        '3': StatusType.DONE
-    }
-
-    print(
-        "\n1. New\n"
-        "2. In work\n"
-        "3. Done\n")
-
-    choice = input("Select status").strip()
+    choice = input("Select priority: ").strip()
 
     if choice not in options:
-        print("Invalid status option")
-        return
+        raise ValidationError("Invalid priority option")
 
     return options[choice]
 
@@ -59,19 +39,19 @@ def print_tasks(tasks: list[Task]):
         return
 
     print(
-        f"\n{'ID':<15}"
-        f"{'TITLE':<15}"
-        f"{'PRIORITY':<15}"
-        f"{'STATUS':>15}"
-        f"{'DEPENDENCE':>12}"
+        f"\n{'TITLE':<20}"
+        f"{'PRIORITY':<10}"
+        f"{'STATUS':<10}"
+        f"{'DEPENDENCE':<12}"
+        f"{'ID':>10}"
     )
-    print('-' * 62)
+    print('-' * 91)
 
     for task in tasks:
         print(
-            f"{task.id:<15}"
-            f"{task.title:<15}"
-            f"{task.priority:<15}"
-            f"{task.status:>15}"
-            f"{len(task.dependence):>15}"
+            f"{task.title:<20}"
+            f"{task.priority:<10}"
+            f"{task.status:<10}"
+            f"{len(task.dependence):<15}"
+            f"{task.id:>10}"
         )

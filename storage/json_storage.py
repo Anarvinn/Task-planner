@@ -20,7 +20,7 @@ class JsonStorage:
             with self.filepath.open('r', encoding="utf-8") as file:
                 data = json.load(file)
 
-            if not isinstance(data, dict):
+            if not isinstance(data, list):
                 raise StorageError("Invalid JSON root structure")
 
             task_map: dict[str, Any] = {}
@@ -78,7 +78,7 @@ class JsonStorage:
 
                 json.dump(data, temp_file, ensure_ascii=False, indent=4)
                 temp_file.flush()
-                os.fsync(temp_file.fileno)
+                os.fsync(temp_file.fileno())
 
             os.replace(tempt_path, self.filepath)
             tempt_path = None

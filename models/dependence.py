@@ -1,11 +1,10 @@
-from models.task import Task
-from services.manager import Manager
+from __future__ import annotations
 from exceptions import DependenceError
 
 
 class CheckDependence:
-    def __init__(self):
-        self.manager = Manager()
+    def __init__(self, manager) -> None:
+        self.manager = manager
 
     def different_id(self, id_task: str, id_new_dependence: str) -> bool:
         if id_task == id_new_dependence:
@@ -13,12 +12,18 @@ class CheckDependence:
         return True
 
     def check_add_dependence(self, id_task: str, id_new_dependence: str,) -> bool:
+        self.different_id(id_task, id_new_dependence)
+
+        if id_new_dependence in self.manager.get_task(id_task).dependence:
+            raise DependenceError("You have already linked this task.")
 
         task_dependence = self.manager.get_task(id_new_dependence)
         if task_dependence.dependence:
             for dep in task_dependence.dependence:
-                if self.different_id(id_task, dep):
-                    self.check_add_dependence(id_task, dep)
+                if id_task == dep:
+                    raise DependenceError(
+                        "You can't create a looped connection.")
+                self.check_add_dependence(id_task, dep)
         return True
 
     def check_del_task(self, id_task: str) -> bool:

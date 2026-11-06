@@ -1,4 +1,3 @@
-# from __future__ import annotations
 from storage.json_storage import JsonStorage
 from interfaces.console import ConsoleMenu
 from services.manager import Manager
@@ -7,7 +6,7 @@ from exceptions import StorageError
 
 def main() -> None:
 
-    storage = JsonStorage('tasks.json')
+    storage = JsonStorage('data/tasks.json')
 
     try:
         manager = Manager(storage)

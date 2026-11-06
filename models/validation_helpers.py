@@ -1,11 +1,12 @@
+from __future__ import annotations
 from exceptions import ValidationError
-from models.task import PriorityType, StatusType
+from models.enum import PriorityType, StatusType
 
 
 def validate_text(text: str, field: str) -> str:
     if not isinstance(text, str) or not text.strip():
         raise ValidationError(f"{field} cannot be empty")
-    return text
+    return text.capitalize()
 
 
 def validate_priority(priority: str, field: str) -> PriorityType:
@@ -23,3 +24,4 @@ def validate_status(status: str, field: str) -> StatusType:
         status = StatusType(status)
     except ValueError:
         raise ValidationError("There is no such status")
+    return status

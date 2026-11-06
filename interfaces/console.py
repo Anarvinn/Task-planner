@@ -1,7 +1,7 @@
 from services.manager import Manager
 from exceptions import ManagerError
 from models.task import Task
-from console_helpers import read_text, print_tasks, get_priority, get_status
+from interfaces.console_helpers import read_text, print_tasks, get_priority
 
 
 class ConsoleMenu:
@@ -10,26 +10,28 @@ class ConsoleMenu:
 
     def run(self) -> None:
 
-        actions = {
-            '1': self.add_task,
-            '2': self.edit_task,
-            '3': self.del_task,
-            '4': self.add_dependence,
-            '5': self.del_dependence,
-            '6': self.show_ready_tasks,
-            '7': self.show_all_tasks
-        }
-
         while True:
+            actions = {
+                '1': self.add_task,
+                '2': self.edit_task,
+                '3': self.del_task,
+                '4': self.add_dependence,
+                '5': self.del_dependence,
+                '6': self.show_ready_tasks,
+                '7': self.show_all_tasks,
+                '8': self.search_task,
+            }
+
             print(
                 "\n========== TASK MANAGER ==========\n"
                 "1. Add task\n"
                 "2. Edit task\n"
-                "3. Delate task"
+                "3. Delate task\n"
                 "4. Add dependencies\n"
                 "5. Delate dependencies\n"
                 "6. Show ready task\n"
                 "7. Show all task\n"
+                "8. Search task\n"
                 "0. Exit\n"
                 "=================================="
             )
@@ -95,7 +97,8 @@ class ConsoleMenu:
     def del_task(self) -> None:
         id_task = read_text("Task ID: ")
         task = self.manager.get_task(id_task)
-        choice = read_text("Are you sure you want to delete the task? Y/N: ")
+        choice = read_text(
+            "Are you sure you want to delete the task? Y/N: ").upper()
         if choice == 'Y':
             self.manager.del_task(task)
             print("Task successfully deleted")
@@ -108,7 +111,7 @@ class ConsoleMenu:
         id_task = read_text("Task ID: ")
         self.manager.get_task(id_task)
 
-        print("\nEnter the ID of the task you want to link")
+        print("\nEnter the ID of the task you want to link\n")
         id_dependence = read_text("Dependence ID: ")
 
         self.manager.add_dependence(id_task, id_dependence)
@@ -131,5 +134,11 @@ class ConsoleMenu:
 
     def show_all_tasks(self) -> None:
         tasks = self.manager.show_all_tasks()
+
+        print_tasks(tasks)
+
+    def search_task(self) -> None:
+        query = read_text("Search: ")
+        tasks = self.manager.search_task(query)
 
         print_tasks(tasks)
