@@ -38,3 +38,6 @@ class Task:
 
     def del_dependence(self, id_del_dependence: str) -> None:
         self.dependence.remove(id_del_dependence)
+
+    def __hash__(self):
+        return hash(self.id)

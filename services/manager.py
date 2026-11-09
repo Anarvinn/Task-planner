@@ -117,20 +117,37 @@ class Manager:
 
         self.record(operation)
 
+    def next_stage(self, id_task: str) -> None:
+
+        def operation() -> Task:
+            task = self.get_task(id_task)
+            if self._dependence.readiness_check(task):
+                if task.status == "Done":
+                    raise DependenceError(
+                        "The task has already been completed")
+                task.status = (StatusType.IN_WORK, StatusType.DONE)[
+                    task.status == "In work"]
+                return deepcopy(task)
+
+        self.record(operation)
+
     def show_ready_tasks(self) -> list[Task]:
         ready_tasks = []
         for task in self.get_all_task():
-            if task.status == 'Done':
+            if task.status == "Done":
                 ready_tasks.append(task)
 
-        result = sorted(ready_tasks, key=lambda t: (
-            t.priority, t.id), reverse=True)
-        return result
+        return self.sorted_tasks(ready_tasks)
+
+    def show_ready_to_start_tasks(self) -> list[Task]:
+        ready_tasks = set()
+        for task in self.get_all_task():
+            if self._dependence.readiness_check(task) and task.status != "Done":
+                ready_tasks.add(task)
+        return self.sorted_tasks(list(ready_tasks))
 
     def show_all_tasks(self) -> list[Task]:
-        result = self.get_all_task()
-        result = sorted(result, key=lambda t: (t.priority, t.id), reverse=True)
-        return result
+        return self.sorted_tasks(self.get_all_task)
 
     def record(self, operation) -> Any:
         previous_tasks = deepcopy(self._tasks)
@@ -151,3 +168,6 @@ class Manager:
             if query in task.title.casefold()
             or query in task.id.casefold()
         ])
+
+    def sorted_tasks(self, tasks: list[Task]) -> list[Task]:
+        return sorted(tasks, key=lambda t: (t.priority, t.id), reverse=True)

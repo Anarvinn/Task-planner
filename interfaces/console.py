@@ -17,9 +17,11 @@ class ConsoleMenu:
                 '3': self.del_task,
                 '4': self.add_dependence,
                 '5': self.del_dependence,
-                '6': self.show_ready_tasks,
-                '7': self.show_all_tasks,
-                '8': self.search_task,
+                '6': self.next_stage,
+                '7': self.show_ready_to_start_tasks,
+                '8': self.show_ready_tasks,
+                '9': self.show_all_tasks,
+                '10': self.search_task,
             }
 
             print(
@@ -29,9 +31,11 @@ class ConsoleMenu:
                 "3. Delate task\n"
                 "4. Add dependencies\n"
                 "5. Delate dependencies\n"
-                "6. Show ready task\n"
-                "7. Show all task\n"
-                "8. Search task\n"
+                "6. Next stage of the task\n"
+                "7. Show ready to start task\n"
+                "8. Show ready task\n"
+                "9. Show all task\n"
+                "10. Search task\n"
                 "0. Exit\n"
                 "=================================="
             )
@@ -126,6 +130,15 @@ class ConsoleMenu:
 
         self.manager.del_dependence(id_task, id_dependence)
         print("Dependence successfully deleted")
+
+    def next_stage(self) -> None:
+        id_task = read_text("Task ID: ")
+        self.manager.next_stage(id_task)
+        print("Status succesfully changed")
+
+    def show_ready_to_start_tasks(self) -> None:
+        tasks = self.manager.show_ready_to_start_tasks()
+        print_tasks(tasks)
 
     def show_ready_tasks(self) -> None:
         tasks = self.manager.show_ready_tasks()

@@ -1,28 +1,49 @@
 [
     {
-        "id": "fb327241-f73d-49c1-8e9d-903c90988987",
-        "title": "Test",
-        "priority": "Low",
+        "id": "11ce7aca-92ae-4279-b6d5-f2721b94caad",
+        "title": "Create project",
+        "priority": "High",
         "status": "New",
-        "dependence": []
+        "dependence": [
+            "a2def98c-803f-403f-b115-6d2c56ae5ab1",
+            "f2045efc-8099-4e5d-81c9-474f325962f0"
+        ]
     },
     {
-        "id": "f4934d63-fbd8-4964-8d66-51228bd42a6f",
-        "title": "Adadtestfdfd",
+        "id": "a2def98c-803f-403f-b115-6d2c56ae5ab1",
+        "title": "Edit console",
         "priority": "Medium",
+        "status": "In work",
+        "dependence": [
+            "ccf6754d-8feb-419f-9d92-1b7735b19cad"
+        ]
+    },
+    {
+        "id": "f2045efc-8099-4e5d-81c9-474f325962f0",
+        "title": "Create test",
+        "priority": "High",
         "status": "New",
         "dependence": []
     },
     {
-        "id": "0e73e73c-82aa-411d-a2c8-47bfa008336d",
-        "title": "Sdstgdesr",
+        "id": "ccf6754d-8feb-419f-9d92-1b7735b19cad",
+        "title": "Make 2 func",
+        "priority": "High",
+        "status": "Done",
+        "dependence": []
+    },
+    {
+        "id": "0857537e-53aa-4d2c-8b44-017b3d5a229f",
+        "title": "Go to arkadia",
         "priority": "Low",
         "status": "New",
-        "dependence": []
+        "dependence": [
+            "452147ea-7acf-443a-9f96-17195abc4228"
+        ]
     },
     {
-        "id": "f77936d7-b873-4ccf-814c-3f9e408c1c95",
-        "title": "Megetest",
+        "id": "452147ea-7acf-443a-9f96-17195abc4228",
+        "title": "Take money",
         "priority": "Medium",
         "status": "New",
         "dependence": []
