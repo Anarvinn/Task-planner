@@ -21,17 +21,14 @@ class Task:
             self,
             *,
             title: str | None = None,
-            priority: str | None = None,
-            status: str | None = None
+            priority: str | None = None
     ) -> None:
+
         if title is not None:
             self.title = validate_text(title, "Title")
 
         if priority is not None:
             self.priority = validate_priority(priority, "Priority")
-
-        if status is not None:
-            self.status = validate_status(status, "Status")
 
     def add_dependence(self, id_new_dependence: str) -> None:
         self.dependence.append(id_new_dependence)

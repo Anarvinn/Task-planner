@@ -58,8 +58,7 @@ class Manager:
         id: str,
         *,
         new_title: str | None = None,
-        new_priority: str | None = None,
-        new_status: str | None = None
+        new_priority: str | None = None
     ) -> None:
 
         def operation() -> Task:
@@ -68,8 +67,7 @@ class Manager:
             updated = deepcopy(task)
             updated.update(
                 title=new_title,
-                priority=new_priority,
-                status=new_status
+                priority=new_priority
             )
             if updated.id != task.id and updated.id is self._tasks:
                 raise DuplicateIdError(
@@ -121,13 +119,15 @@ class Manager:
 
         def operation() -> Task:
             task = self.get_task(id_task)
-            if self._dependence.readiness_check(task):
-                if task.status == "Done":
-                    raise DependenceError(
-                        "The task has already been completed")
-                task.status = (StatusType.IN_WORK, StatusType.DONE)[
-                    task.status == "In work"]
-                return deepcopy(task)
+            if not self._dependence.readiness_check(task):
+                raise DependenceError(
+                    "You cannot start a task until all dependencies are completed")
+            if task.status == "Done":
+                raise DependenceError(
+                    "The task has already been completed")
+            task.status = (StatusType.IN_WORK, StatusType.DONE)[
+                task.status == "In work"]
+            return deepcopy(task)
 
         self.record(operation)
 
@@ -147,7 +147,7 @@ class Manager:
         return self.sorted_tasks(list(ready_tasks))
 
     def show_all_tasks(self) -> list[Task]:
-        return self.sorted_tasks(self.get_all_task)
+        return self.sorted_tasks(self.get_all_task())
 
     def record(self, operation) -> Any:
         previous_tasks = deepcopy(self._tasks)

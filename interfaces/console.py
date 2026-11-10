@@ -85,15 +85,10 @@ class ConsoleMenu:
             f"Priority [{task.priority}]: "
         ).strip()
 
-        new_status = input(
-            f"Status [{task.status}]: "
-        ).strip()
-
         self.manager.edit_task(
             id,
             new_title=new_title or None,
-            new_priority=new_priority or None,
-            new_status=new_status or None
+            new_priority=new_priority or None
         )
 
         print("Task successfully updated")
