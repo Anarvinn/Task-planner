@@ -23,6 +23,11 @@ class PriorityType(StrEnum):
             return NotImplemented
         return (self.weight < other.weight)
 
+    def __gt__(self, other: PriorityType) -> bool:
+        if not isinstance(other, PriorityType):
+            return NotImplemented
+        return (self.weight > other.weight)
+
 
 class StatusType(StrEnum):
     NEW = 'New'

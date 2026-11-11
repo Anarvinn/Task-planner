@@ -41,17 +41,20 @@ class Manager:
     def get_all_task(self) -> list[Task]:
         return deepcopy(list(self._tasks.values()))
 
-    def add_task(self, task: Task) -> Task:
+    def add_task(self, title: str, priority: PriorityType) -> Task:
 
         def operation() -> None:
+            task = Task(title, priority)
+
             if task.id in self._tasks:
                 raise DuplicateIdError(
                     f"ID {task.id} already exists"
                 )
 
             self._tasks[task.id] = deepcopy(task)
+            return deepcopy(task)
 
-        self.record(operation)
+        return self.record(operation)
 
     def edit_task(
         self,
@@ -59,7 +62,7 @@ class Manager:
         *,
         new_title: str | None = None,
         new_priority: str | None = None
-    ) -> None:
+    ) -> Task:
 
         def operation() -> Task:
             task = self.get_task(id)
@@ -82,17 +85,18 @@ class Manager:
 
         return self.record(operation)
 
-    def del_task(self, task: Task) -> None:
+    def del_task(self, id_task: str) -> list[dict[str, Task]]:
 
         def operation() -> list[dict[str, Task]]:
-            if self._dependence.check_del_task(task.id):
+            if self._dependence.check_del_task(id_task):
+                self.get_task(id_task)
 
-                del self._tasks[task.id]
+                del self._tasks[id_task]
                 return deepcopy(self._tasks)
 
         return self.record(operation)
 
-    def add_dependence(self, id_task: str, id_dependence: str) -> None:
+    def add_dependence(self, id_task: str, id_dependence: str) -> Task:
 
         def operation() -> Task:
             if self._dependence.check_add_dependence(id_task, id_dependence,):
@@ -102,7 +106,7 @@ class Manager:
 
         return self.record(operation)
 
-    def del_dependence(self, id_task: str, id_dependence: str) -> None:
+    def del_dependence(self, id_task: str, id_dependence: str) -> Task:
 
         def operation() -> Task:
             task = self.get_task(id_task)
@@ -115,7 +119,7 @@ class Manager:
 
         self.record(operation)
 
-    def next_stage(self, id_task: str) -> None:
+    def next_stage(self, id_task: str) -> Task:
 
         def operation() -> Task:
             task = self.get_task(id_task)
@@ -123,13 +127,13 @@ class Manager:
                 raise DependenceError(
                     "You cannot start a task until all dependencies are completed")
             if task.status == "Done":
-                raise DependenceError(
+                raise ValidationError(
                     "The task has already been completed")
             task.status = (StatusType.IN_WORK, StatusType.DONE)[
                 task.status == "In work"]
             return deepcopy(task)
 
-        self.record(operation)
+        return self.record(operation)
 
     def show_ready_tasks(self) -> list[Task]:
         ready_tasks = []

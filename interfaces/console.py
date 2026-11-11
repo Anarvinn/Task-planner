@@ -64,12 +64,7 @@ class ConsoleMenu:
         title = read_text("Title: ")
         priority = get_priority()
 
-        task = Task(
-            title=title,
-            priority=priority
-        )
-
-        self.manager.add_task(task)
+        self.manager.add_task(title, priority)
         print("Task successfully added")
 
     def edit_task(self) -> None:
@@ -95,11 +90,11 @@ class ConsoleMenu:
 
     def del_task(self) -> None:
         id_task = read_text("Task ID: ")
-        task = self.manager.get_task(id_task)
+        self.manager.get_task(id_task)
         choice = read_text(
             "Are you sure you want to delete the task? Y/N: ").upper()
         if choice == 'Y':
-            self.manager.del_task(task)
+            self.manager.del_task(id_task)
             print("Task successfully deleted")
         elif choice == 'N':
             return
