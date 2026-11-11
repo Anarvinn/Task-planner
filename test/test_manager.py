@@ -1,11 +1,14 @@
+from __future__ import annotations
 from exceptions import DependencyError, TaskNotFoundError, ValidationError
 from storage.json_storage import JsonStorage
 from services.manager import Manager
 from models.enum import StatusType
+from models.task import Task
+from pathlib import Path
 import pytest
 
 
-def test_manager_restores_tasks_from_storage(manager):
+def test_manager_restores_tasks_from_storage(manager: Manager) -> None:
     task1 = manager.add_task('First', 'High')
     task2 = manager.add_task('Second', 'Medium')
     task3 = manager.add_task('Last', 'Low')
@@ -25,7 +28,7 @@ def test_manager_restores_tasks_from_storage(manager):
     assert task3 == restored_tasks3
 
 
-def test_tasks_are_sorted_by_priority(manager):
+def test_tasks_are_sorted_by_priority(manager: Manager) -> None:
     manager.add_task('First', 'High')
     manager.add_task('Second', 'Medium')
     manager.add_task('Last', 'Low')
@@ -37,7 +40,7 @@ def test_tasks_are_sorted_by_priority(manager):
     assert sort_tasks[2].title == 'Last'
 
 
-def test_show_completed_tasks_returns_only_completed_tasks(manager, sample_task):
+def test_show_completed_tasks_returns_only_completed_tasks(manager: Manager, sample_task: Task) -> None:
     id = sample_task.id
     manager.add_task('Second task', 'High')
     manager.advance_task_status(id)
@@ -49,7 +52,7 @@ def test_show_completed_tasks_returns_only_completed_tasks(manager, sample_task)
     assert sort_tasks[0].title == 'Test task'
 
 
-def test_show_tasks_ready_to_start_excludes_blocked_tasks(manager, sample_task):
+def test_show_tasks_ready_to_start_excludes_blocked_tasks(manager: Manager, sample_task: Task) -> None:
 
     task1 = sample_task
     task2 = manager.add_task('Test 2', 'Medium')
@@ -63,7 +66,7 @@ def test_show_tasks_ready_to_start_excludes_blocked_tasks(manager, sample_task):
     assert sort_tasks[0].title == 'Test 3'
 
 
-def test_manager_validates_dependencies(manager, sample_task):
+def test_manager_validates_dependencies(manager: Manager, sample_task: Task) -> None:
     task1 = sample_task
     task2 = manager.add_task('Test task 2', 'Medium')
 
@@ -93,7 +96,7 @@ def test_manager_validates_dependencies(manager, sample_task):
     assert task2.id in task1.dependency
 
 
-def test_manager_deletes_task(manager, sample_task):
+def test_manager_deletes_task(manager: Manager, sample_task: Task) -> None:
     id = sample_task.id
     old_list_tasks = manager.get_all_tasks()
 
@@ -105,7 +108,7 @@ def test_manager_deletes_task(manager, sample_task):
         manager.delete_task('123')
 
 
-def test_unknown_task_id_raises_error(manager, sample_task):
+def test_unknown_task_id_raises_error(manager: Manager, sample_task: Task) -> None:
     old_list = manager.get_all_tasks()
     with pytest.raises(TaskNotFoundError):
         manager.edit_task('123', new_title='New title', new_priority='Medium')
@@ -122,7 +125,7 @@ def test_unknown_task_id_raises_error(manager, sample_task):
     assert old_list == new_list
 
 
-def test_manager_handles_empty_storage(tmp_path):
+def test_manager_handles_empty_storage(tmp_path: Path) -> None:
     storage = JsonStorage(tmp_path / "test_tasks.json")
     manager = Manager(storage)
 
@@ -134,7 +137,7 @@ def test_manager_handles_empty_storage(tmp_path):
     assert len(completed_tasks) == 0
 
 
-def test_dependencies_are_restored_from_storage(manager, sample_task):
+def test_dependencies_are_restored_from_storage(manager: Manager, sample_task: Task) -> None:
     task1 = sample_task
     task2 = manager.add_task('Task 2', 'High')
 
@@ -149,7 +152,7 @@ def test_dependencies_are_restored_from_storage(manager, sample_task):
     assert restored_task2.id in restored_task1.dependency
 
 
-def test_task_status_lifecycle(manager, sample_task):
+def test_task_status_lifecycle(manager: Manager, sample_task: Task) -> None:
     task = sample_task
     assert task.status == StatusType.NEW
 

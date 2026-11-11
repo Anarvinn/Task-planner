@@ -1,10 +1,12 @@
+from __future__ import annotations
 from models.enum import PriorityType, StatusType
 from exceptions import ValidationError
+from services.manager import Manager
 from models.task import Task
 import pytest
 
 
-def test_task_rejects_invalid_data():
+def test_task_rejects_invalid_data() -> None:
     with pytest.raises(ValidationError):
         Task('', 'Low')
 
@@ -18,7 +20,7 @@ def test_task_rejects_invalid_data():
         Task('Test', 'Test')
 
 
-def test_task_is_created_with_valid_data():
+def test_task_is_created_with_valid_data() -> None:
     task = Task('Correct title', 'High')
 
     assert task.title == 'Correct title'
@@ -27,7 +29,7 @@ def test_task_is_created_with_valid_data():
     assert task.dependency == []
 
 
-def test_invalid_task_updates_are_rejected(manager, sample_task):
+def test_invalid_task_updates_are_rejected(manager: Manager, sample_task: Task) -> None:
     task = sample_task
     old_title = task.title
     old_priority = task.priority
@@ -41,7 +43,7 @@ def test_invalid_task_updates_are_rejected(manager, sample_task):
     assert task.priority == old_priority
 
 
-def test_task_can_be_updated(manager, sample_task):
+def test_task_can_be_updated(manager: Manager, sample_task: Task) -> None:
     task = sample_task
     id = task.id
     manager.edit_task(id=id, new_title='New title')
