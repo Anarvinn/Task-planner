@@ -27,18 +27,19 @@ class JsonStorage:
 
             for item in data:
                 if not isinstance(item, dict):
-                    raise StorageError("Invalid task record")
+                    raise StorageError(
+                        "Invalid task data structure in storage")
 
                 task = Task(
                     id=item['id'],
                     title=item['title'],
                     priority=item['priority'],
                     status=item['status'],
-                    dependence=item['dependence']
+                    dependency=item['dependency']
                 )
 
                 if task.id in task_map:
-                    raise StorageError("Duplicate Id in storage")
+                    raise StorageError("Duplicate task ID in storage")
 
                 task_map[task.id] = asdict(task)
 
@@ -47,7 +48,7 @@ class JsonStorage:
             raise
 
         except (json.JSONDecodeError, KeyError, TypeError, ValueError) as e:
-            raise StorageError(f"Cannot load manager data: {e}") from e
+            raise StorageError(f"Cannot load task data: {e}") from e
 
     def save(self, tasks: dict[str, Task]) -> None:
         data = [{
@@ -55,7 +56,7 @@ class JsonStorage:
             'title': task.title,
             'priority': task.priority,
             'status': task.status,
-            'dependence': task.dependence
+            'dependency': task.dependency
         }
             for task in tasks.values()]
 
@@ -84,7 +85,7 @@ class JsonStorage:
             tempt_path = None
         except OSError as e:
             raise StorageError(
-                f"Cannot save manage data: {e}"
+                f"Cannot save task data: {e}"
             ) from e
 
         finally:

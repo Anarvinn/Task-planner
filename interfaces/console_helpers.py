@@ -35,14 +35,14 @@ def get_priority() -> PriorityType:
 
 def print_tasks(tasks: list[Task]):
     if not tasks:
-        print("No task found")
+        print("No tasks found")
         return
 
     print(
         f"\n{'TITLE':<20}"
         f"{'PRIORITY':<10}"
         f"{'STATUS':<10}"
-        f"{'DEPENDENCE':<12}"
+        f"{'DEPENDENCIES':<12}"
         f"{'ID':>10}"
     )
     print('-' * 91)
@@ -52,6 +52,6 @@ def print_tasks(tasks: list[Task]):
             f"{task.title:<20}"
             f"{task.priority:<10}"
             f"{task.status:<10}"
-            f"{len(task.dependence):<15}"
+            f"{len(task.dependency):<15}"
             f"{task.id:>10}"
         )

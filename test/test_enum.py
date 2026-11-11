@@ -8,7 +8,7 @@ def test_priority_ordering():
     assert PriorityType.HIGH > PriorityType.LOW
 
 
-def test_status():
+def test_status_values():
     assert StatusType.DONE == "Done"
     assert StatusType.IN_WORK == "In work"
     assert StatusType.NEW == "New"

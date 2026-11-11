@@ -8,10 +8,10 @@ class ValidationError(ManagerError):
 
 
 class StorageError(ManagerError):
-    """"Storage operation failed"""
+    """Storage operation failed"""
 
 
-class DependenceError(ManagerError):
+class DependencyError(ManagerError):
     """Dependency connection error"""
 
 
@@ -19,5 +19,5 @@ class TaskNotFoundError(ManagerError):
     """Task not found"""
 
 
-class DuplicateIdError(ManagerError):
-    """ID already exist"""
+class DuplicateTaskIdError(ManagerError):
+    """ID already exists"""

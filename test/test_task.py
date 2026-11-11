@@ -4,7 +4,7 @@ from models.task import Task
 import pytest
 
 
-def test_validation_error():
+def test_task_rejects_invalid_data():
     with pytest.raises(ValidationError):
         Task('', 'Low')
 
@@ -18,16 +18,16 @@ def test_validation_error():
         Task('Test', 'Test')
 
 
-def test_correct_task():
+def test_task_is_created_with_valid_data():
     task = Task('Correct title', 'High')
 
     assert task.title == 'Correct title'
     assert task.priority == PriorityType.HIGH
     assert task.status == StatusType.NEW
-    assert task.dependence == []
+    assert task.dependency == []
 
 
-def test_validate_update_task(manager, sample_task):
+def test_invalid_task_updates_are_rejected(manager, sample_task):
     task = sample_task
     old_title = task.title
     old_priority = task.priority
@@ -41,12 +41,12 @@ def test_validate_update_task(manager, sample_task):
     assert task.priority == old_priority
 
 
-def test_correct_update_task(manager, sample_task):
+def test_task_can_be_updated(manager, sample_task):
     task = sample_task
     id = task.id
     manager.edit_task(id=id, new_title='New title')
     manager.edit_task(id=id, new_priority='High')
-    manager.next_stage(id_task=id)
+    manager.advance_task_status(id_task=id)
     task = manager.get_task(id)
 
     assert task.id == id

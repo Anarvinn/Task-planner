@@ -14,7 +14,7 @@ def validate_priority(priority: str, field: str) -> PriorityType:
     try:
         priority = PriorityType(priority)
     except ValueError:
-        raise ValidationError("There is no such priority")
+        raise ValidationError("Invalid priority value")
     return priority
 
 
@@ -23,5 +23,5 @@ def validate_status(status: str, field: str) -> StatusType:
     try:
         status = StatusType(status)
     except ValueError:
-        raise ValidationError("There is no such status")
+        raise ValidationError("Invalid status value")
     return status

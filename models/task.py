@@ -11,7 +11,7 @@ class Task:
     priority: PriorityType
     id: str = field(default_factory=lambda: str(uuid.uuid4()))
     status: StatusType = field(default=StatusType.NEW)
-    dependence: list = field(default_factory=list)
+    dependency: list = field(default_factory=list)
 
     def __post_init__(self) -> None:
         self.title = validate_text(self.title, "Title")
@@ -30,11 +30,11 @@ class Task:
         if priority is not None:
             self.priority = validate_priority(priority, "Priority")
 
-    def add_dependence(self, id_new_dependence: str) -> None:
-        self.dependence.append(id_new_dependence)
+    def add_dependency(self, dependency_id: str) -> None:
+        self.dependency.append(dependency_id)
 
-    def del_dependence(self, id_del_dependence: str) -> None:
-        self.dependence.remove(id_del_dependence)
+    def remove_dependency(self, id_remove_dependency: str) -> None:
+        self.dependency.remove(id_remove_dependency)
 
     def __hash__(self):
         return hash(self.id)

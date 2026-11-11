@@ -14,28 +14,28 @@ class ConsoleMenu:
             actions = {
                 '1': self.add_task,
                 '2': self.edit_task,
-                '3': self.del_task,
-                '4': self.add_dependence,
-                '5': self.del_dependence,
-                '6': self.next_stage,
-                '7': self.show_ready_to_start_tasks,
-                '8': self.show_ready_tasks,
+                '3': self.delete_task,
+                '4': self.add_dependency,
+                '5': self.remove_dependency,
+                '6': self.advance_task_status,
+                '7': self.show_tasks_ready_to_start,
+                '8': self.show_completed_tasks,
                 '9': self.show_all_tasks,
-                '10': self.search_task,
+                '10': self.search_tasks,
             }
 
             print(
                 "\n========== TASK MANAGER ==========\n"
                 "1. Add task\n"
                 "2. Edit task\n"
-                "3. Delate task\n"
-                "4. Add dependencies\n"
-                "5. Delate dependencies\n"
-                "6. Next stage of the task\n"
-                "7. Show ready to start task\n"
-                "8. Show ready task\n"
+                "3. Delete task\n"
+                "4. Add dependency\n"
+                "5. Remove dependency\n"
+                "6. Advance task status\n"
+                "7. Show tasks ready to start\n"
+                "8. Show completed tasks\n"
                 "9. Show all task\n"
-                "10. Search task\n"
+                "10. Search tasks\n"
                 "0. Exit\n"
                 "=================================="
             )
@@ -43,7 +43,7 @@ class ConsoleMenu:
             choice = input("Select action: ").strip()
 
             if choice == '0':
-                print("Program closed")
+                print("Application closed")
                 break
 
             actions = actions.get(choice)
@@ -65,7 +65,7 @@ class ConsoleMenu:
         priority = get_priority()
 
         self.manager.add_task(title, priority)
-        print("Task successfully added")
+        print("Task added successfully")
 
     def edit_task(self) -> None:
         id = read_text("Task ID: ")
@@ -86,52 +86,52 @@ class ConsoleMenu:
             new_priority=new_priority or None
         )
 
-        print("Task successfully updated")
+        print("Task updated successfully")
 
-    def del_task(self) -> None:
+    def delete_task(self) -> None:
         id_task = read_text("Task ID: ")
         self.manager.get_task(id_task)
         choice = read_text(
             "Are you sure you want to delete the task? Y/N: ").upper()
         if choice == 'Y':
-            self.manager.del_task(id_task)
-            print("Task successfully deleted")
+            self.manager.delete_task(id_task)
+            print("Task deleted successfully")
         elif choice == 'N':
             return
         else:
             print("Invalid choice")
 
-    def add_dependence(self) -> None:
+    def add_dependency(self) -> None:
         id_task = read_text("Task ID: ")
         self.manager.get_task(id_task)
 
         print("\nEnter the ID of the task you want to link\n")
-        id_dependence = read_text("Dependence ID: ")
+        id_dependency = read_text("Dependency ID: ")
 
-        self.manager.add_dependence(id_task, id_dependence)
-        print("Dependence successfully added")
+        self.manager.add_dependency(id_task, id_dependency)
+        print("Dependency added successfully")
 
-    def del_dependence(self) -> None:
+    def remove_dependency(self) -> None:
         id_task = read_text("Task ID: ")
         self.manager.get_task(id_task)
 
         print("\nEnter the ID of the task you want to delete")
-        id_dependence = read_text("Dependence ID: ")
+        id_dependency = read_text("Dependency ID: ")
 
-        self.manager.del_dependence(id_task, id_dependence)
-        print("Dependence successfully deleted")
+        self.manager.remove_dependency(id_task, id_dependency)
+        print("Dependency removed successfully")
 
-    def next_stage(self) -> None:
+    def advance_task_status(self) -> None:
         id_task = read_text("Task ID: ")
-        self.manager.next_stage(id_task)
-        print("Status succesfully changed")
+        self.manager.advance_task_status(id_task)
+        print("Task status updated successfully")
 
-    def show_ready_to_start_tasks(self) -> None:
-        tasks = self.manager.show_ready_to_start_tasks()
+    def show_tasks_ready_to_start(self) -> None:
+        tasks = self.manager.show_tasks_ready_to_start()
         print_tasks(tasks)
 
-    def show_ready_tasks(self) -> None:
-        tasks = self.manager.show_ready_tasks()
+    def show_completed_tasks(self) -> None:
+        tasks = self.manager.show_completed_tasks()
 
         print_tasks(tasks)
 
@@ -140,8 +140,8 @@ class ConsoleMenu:
 
         print_tasks(tasks)
 
-    def search_task(self) -> None:
+    def search_tasks(self) -> None:
         query = read_text("Search: ")
-        tasks = self.manager.search_task(query)
+        tasks = self.manager.search_tasks(query)
 
         print_tasks(tasks)
